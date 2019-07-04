@@ -6,14 +6,15 @@
 #    By: kbatz <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/04 18:46:50 by kbatz             #+#    #+#              #
-#    Updated: 2019/07/04 19:05:29 by kbatz            ###   ########.fr        #
+#    Updated: 2019/07/04 19:14:43 by kbatz            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = sastantua
 ORIGIN = sastantua_origin
-NAME_TEST = a.sastantua.test
-ORIGIN_TEST = b.sastantua.test
+TEST = sastantua.test
+NAME_TEST = a.$(TEST)
+ORIGIN_TEST = b.$(TEST)
 
 SRC =	main.c		\
 		sastantua.c	\
@@ -23,16 +24,17 @@ all: test
 compile:
 	gcc -Wall -Wextra -Werror $(SRC) -o $(NAME)
 
-test: compile 1 2 3 4 5 10 15 20 30 40 50
+test: compile 1test 2test 3test 4test 5test 10test 15test 20test 30test 40test 50test
 
-%:
+%test:
 	@echo 'BEGIN TEST '$@
 	@echo 'ORIGIN:'
 	time ./$(ORIGIN) $@ > $(ORIGIN_TEST)
 	@echo ''
 	@echo 'MY:'
 	time ./$(NAME) $@ > $(NAME_TEST)
-	diff $(NAME_TEST) $(ORIGIN_TEST)
+	diff $(NAME_TEST) $(ORIGIN_TEST) > $(TEST)
+	cat $(TEST)
 	@echo 'END TEST '$@
 	@echo ''
 
@@ -40,3 +42,4 @@ clean:
 	rm -f $(NAME)
 	rm -f $(NAME_TEST)
 	rm -f $(ORIGIN_TEST)
+	rm -f $(TEST)
