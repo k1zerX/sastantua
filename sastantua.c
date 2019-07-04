@@ -6,7 +6,7 @@
 /*   By: kbatz <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/21 18:20:37 by kbatz             #+#    #+#             */
-/*   Updated: 2018/10/21 21:31:56 by kbatz            ###   ########.fr       */
+/*   Updated: 2019/07/04 18:45:49 by kbatz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,33 +16,32 @@ void	print_l(char c, int border)
 {
 	int i;
 
-	i = 0;
-	while (i < border)
-	{
+	i = -1;
+	while (++i < border)
 		ft_putchar(c);
-		i++;
-	}
 }
 
 void	print_m(int l, int kol)
 {
 	print_l(' ', l - kol - 1);
 	ft_putchar('/');
-	print_l('*', kol * 2 + 1);
+	print_l('*', (kol << 1) + 1);
 	ft_putchar('\\');
 }
 
 void	door(int door_size, int l, int kol)
 {
 	int j;
+	int	buf;
 
-	j = 0;
-	while (j < door_size)
+	j = -1;
+	while (++j < door_size)
 	{
 		print_l(' ', l - kol - j - 1);
 		ft_putchar('/');
-		print_l('*', kol + j - door_size / 2);
-		if ((j == door_size / 2) && (door_size > 3))
+		buf = door_size >> 1;
+		print_l('*', kol + j - buf);
+		if ((j == buf) && (door_size > 3))
 		{
 			print_l('|', door_size - 2);
 			ft_putchar('$');
@@ -52,10 +51,9 @@ void	door(int door_size, int l, int kol)
 		{
 			print_l('|', door_size);
 		}
-		print_l('*', kol + j - door_size / 2);
+		print_l('*', kol + j - (door_size >> 1));
 		ft_putchar('\\');
 		ft_putchar('\n');
-		j++;
 	}
 }
 
@@ -67,22 +65,20 @@ void	top(int h, int l, int size, int door_size)
 	int j;
 	int i;
 
-	j = 0;
-	while ((j < size) && !(num == h - door_size))
+	j = -1;
+	while ((++j < size) && !(num == h - door_size))
 	{
-		i = 0;
-		while (i < 3 + j)
+		i = -1;
+		while (++i < 3 + j)
 		{
-			buf = j / 2;
-			num = (j + 5) * j / 2 + i;
-			kol = num + buf + buf * buf + (j % 2) * ((j + 1) / 2) + j;
+			buf = j >> 1;
+			num = (((j + 5) * j) >> 1) + i;
+			kol = num + buf + buf * buf + (j & 1) * ((j + 1) >> 1) + j;
 			if ((i == size + 2 - door_size) && (j == size - 1))
 				break ;
 			print_m(l, kol);
 			ft_putchar('\n');
-			i++;
 		}
-		j++;
 	}
 	door(door_size, l, kol);
 }
@@ -96,10 +92,10 @@ void	sastantua(int size)
 
 	if (size > 0)
 	{
-		h = (size + 5) * size / 2;
-		buf = (size - 1) / 2;
-		door_size = buf * 2 + 1;
-		l = h + size - 1 + buf + buf * buf + ((size - 1) % 2) * (size / 2);
+		h = ((size + 5) * size) >> 1;
+		buf = (size - 1) >> 1;
+		door_size = (buf << 1) + 1;
+		l = h + size - 1 + buf + buf * buf + ((size - 1) & 1) * (size >> 1);
 		top(h, l, size, door_size);
 	}
 }
