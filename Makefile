@@ -6,7 +6,7 @@
 #    By: kbatz <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/04 18:46:50 by kbatz             #+#    #+#              #
-#    Updated: 2019/07/04 19:14:43 by kbatz            ###   ########.fr        #
+#    Updated: 2019/07/04 19:27:37 by kbatz            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,12 +19,24 @@ ORIGIN_TEST = b.$(TEST)
 SRC =	main.c		\
 		sastantua.c	\
 
-all: test
+all: compile test clean
 
 compile:
 	gcc -Wall -Wextra -Werror $(SRC) -o $(NAME)
 
-test: compile 1test 2test 3test 4test 5test 10test 15test 20test 30test 40test 50test
+compile_O:
+	gcc -Wall -Wextra -Werror $(SRC) -o $(NAME) -O
+
+compile_O2:
+	gcc -Wall -Wextra -Werror $(SRC) -o $(NAME) -O2
+
+compile_O3:
+	gcc -Wall -Wextra -Werror $(SRC) -o $(NAME) -O3
+
+compile_Os:
+	gcc -Wall -Wextra -Werror $(SRC) -o $(NAME) -Os
+
+test: 1test 2test 3test 4test 5test 10test 15test 20test 30test 40test 50test
 
 %test:
 	@echo 'BEGIN TEST '$@
